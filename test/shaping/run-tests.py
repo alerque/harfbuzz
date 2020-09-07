@@ -6,7 +6,11 @@ def cmd(command):
 	print (command)
 	global process
 	process.stdin.write ((':'.join (command) + '\n').encode ("utf-8"))
-	process.stdin.flush ()
+	try:
+		process.stdin.flush ()
+	except:
+		os.system('gci -r -fi log.txt')
+		raise
 	return process.stdout.readline().decode ("utf-8").strip ()
 
 args = sys.argv[1:]

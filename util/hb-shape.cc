@@ -25,6 +25,8 @@
  * Google Author(s): Behdad Esfahbod
  */
 
+#include <stdio.h>
+
 #include "main-font-text.hh"
 #include "shape-consumer.hh"
 
@@ -159,11 +161,14 @@ main (int argc, char **argv)
 {
   if (argc == 2 && !strcmp (argv[1], "--batch"))
   {
+    FILE *log = fopen ("log.txt", "a");
+    setbuf (log, NULL);
     unsigned int ret = 0;
     char buf[4092];
     while (fgets (buf, sizeof (buf), stdin))
     {
       size_t l = strlen (buf);
+      fprintf (log, "l: %zu\n", l);
       if (l && buf[l - 1] == '\n') buf[l - 1] = '\0';
       main_font_text_t<shape_consumer_t<output_buffer_t>, FONT_SIZE_UPEM, 0> driver;
       char *args[32];
@@ -180,12 +185,19 @@ main (int argc, char **argv)
 	/* Skip 2 first bytes on first argument if is Windows path, "C:\..." */
 	start_offset = argc == 2 && p[0] != '\0' && p[0] != ':' && p[1] == ':' && (p[2] == '\\' || p[2] == '/') ? 2 : 0;
       }
+      fprintf (log, "argc: %d\n", argc);
       ret |= driver.main (argc, args);
+      fprintf (log, "ret: %u\n", ret);
       fflush (stdout);
+      fprintf (log, "flushed\n");
 
       if (ret)
+      {
+	fprintf (log, "break");
 	break;
+      }
     }
+    fclose (log);
     return ret;
   }
   main_font_text_t<shape_consumer_t<output_buffer_t>, FONT_SIZE_UPEM, 0> driver;
