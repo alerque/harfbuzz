@@ -61,7 +61,7 @@ workflows:
             - distcheck
           filters:
             tags:
-              only: /^\d+.\d+.\d+$/
+              only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
       - crossbuild-win32
@@ -70,6 +70,6 @@ workflows:
             - crossbuild-win32
           filters:
             tags:
-              only: /^\d+.\d+.\d+$/
+              only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
