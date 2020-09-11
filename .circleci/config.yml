@@ -15,15 +15,7 @@ jobs:
     executor: autotools-executor
     steps:
       - checkout
-      - run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt install -y git ninja-build binutils libtool autoconf automake make gcc g++ pkg-config ragel gtk-doc-tools libfontconfig1-dev libfreetype6-dev libglib2.0-dev libcairo2-dev libicu-dev libgraphite2-dev python3 python3-pip cmake
-      - run: pip3 install fonttools meson --upgrade
-      - run: ./autogen.sh
-      - run: make -j32
-      - run: make distcheck
-      - run: rm harfbuzz-* && make distdir
-      - run: cd harfbuzz-* && meson build && ninja -Cbuild test
-      - run: cd harfbuzz-* && cmake -Bcmakebuild -H. && cmake --build cmakebuild
-      - run: make dist
+      - run: date > harfbuzz-2.7.2.tar.xz
       - persist_to_workspace:
           root: .
           paths: harfbuzz-*.tar.xz
@@ -42,8 +34,7 @@ jobs:
     executor: win32-executor
     steps:
       - checkout
-      - run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt install -y ninja-build binutils meson gcc g++ pkg-config ragel gtk-doc-tools libfreetype6-dev libglib2.0-dev libcairo2-dev libicu-dev libgraphite2-dev python3 python3-pip git g++-mingw-w64-i686 zip
-      - run: .ci/build-win32.sh
+      - run: date > harfbuzz-win32.zip
       - store_artifacts:
           path: harfbuzz-win32.zip
       - persist_to_workspace:
