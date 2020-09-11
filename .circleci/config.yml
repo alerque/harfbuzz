@@ -27,7 +27,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          export CIRCLE_TAG=2.7.2
           .ci/publish_release_artifact.sh harfbuzz-$CIRCLE_TAG.tar.xz
 
   crossbuild-win32:
@@ -48,7 +47,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: |
-          export CIRCLE_TAG=2.7.2
           mv harfbuzz-win32{,-$CIRCLE_TAG}.zip
           .ci/publish_release_artifact.sh harfbuzz-win32-$CIRCLE_TAG.zip
 
@@ -65,7 +63,7 @@ workflows:
             tags:
               only: /^\d+.\d+.\d+$/
             branches:
-              only: /^win32-artifacts$/
+              ignore: /.*/
       - crossbuild-win32
       - publish-win32:
           requires:
@@ -74,5 +72,4 @@ workflows:
             tags:
               only: /^\d+.\d+.\d+$/
             branches:
-              only: /^win32-artifacts$/
-
+              ignore: /.*/
