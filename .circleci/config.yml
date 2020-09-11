@@ -55,7 +55,10 @@ workflows:
 
   build:
     jobs:
-      - distcheck # will be dropped with autotools removal
+      - distcheck: # will be dropped with autotools removal
+          filters:
+            tags:
+              only: /^\d+.\d+.\d+$/
       - publish-dist:
           requires:
             - distcheck
@@ -64,7 +67,10 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
-      - crossbuild-win32
+      - crossbuild-win32:
+          filters:
+            tags:
+              only: /^\d+.\d+.\d+$/
       - publish-win32:
           requires:
             - crossbuild-win32
